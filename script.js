@@ -18,6 +18,9 @@ openCameraBtn.addEventListener('click', async () => {
     openCameraBtn.disabled = true;
     closeCameraBtn.disabled = false;
     takePictureBtn.disabled = false;
+
+    // Flip the video feed horizontally using CSS
+    video.style.transform = 'scaleX(-1)';
   } catch (error) {
     alert('Error accessing camera: ' + error.message);
   }
@@ -50,8 +53,11 @@ takePictureBtn.addEventListener('click', () => {
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 
-    // Draw the current frame from the video feed onto the canvas
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    // Flip the image horizontally on the canvas
+    ctx.save(); // Save the current state
+    ctx.scale(-1, 1); // Flip horizontally
+    ctx.drawImage(video, -canvas.width, 0, canvas.width, canvas.height); // Draw flipped image
+    ctx.restore(); // Restore the original state
 
     // Pause the video feed and hide it
     video.pause();
