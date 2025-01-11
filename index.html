@@ -1,13 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Camera Access</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Camera App</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Camera Access Demo</h1>
-    <video id="camera" autoplay playsinline></video>
-    <script src="script.js"></script>
+  <h1>Camera App</h1>
+
+  <!-- Video feed for live camera -->
+  <video id="camera" autoplay></video>
+
+  <!-- Canvas for displaying the frozen snapshot -->
+  <canvas id="snapshot"></canvas>
+
+  <!-- Control buttons -->
+  <div class="controls">
+    <button id="openCamera">Open Camera</button>
+    <button id="closeCamera" disabled>Close Camera</button>
+    <button id="takePicture" disabled>Take Picture</button>
+    <button id="savePicture" disabled>Save Picture</button>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
