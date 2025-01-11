@@ -23,13 +23,17 @@ body {
   text-align: center;
   margin: 0;
   padding: 0;
-  background: 
 }
+
+
 
 /* Title */
 h1 {
   margin-top: 20px;
   color: #333;
+}
+span{
+  font-size: 20px;
 }
 
 h3 {
