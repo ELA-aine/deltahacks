@@ -9,7 +9,7 @@ const ctx = canvas.getContext('2d');
 let stream = null;
 
 // Open Camera
-openCameraBtn.addEventListener('click', async () => {
+const openCamera = async () => {
   try {
     stream = await navigator.mediaDevices.getUserMedia({ video: true });
     video.srcObject = stream;
@@ -24,10 +24,10 @@ openCameraBtn.addEventListener('click', async () => {
   } catch (error) {
     alert('Error accessing camera: ' + error.message);
   }
-});
+};
 
 // Close Camera
-closeCameraBtn.addEventListener('click', () => {
+const closeCamera = () => {
   if (stream) {
     const tracks = stream.getTracks();
     tracks.forEach(track => track.stop());
@@ -36,18 +36,17 @@ closeCameraBtn.addEventListener('click', () => {
 
     // Hide video and keep the canvas if a picture was taken
     video.style.display = 'none';
-    canvas.style.display = 'block';
-    canvas.style.display = 'none';
+    canvas.style.display = canvas.style.display === 'block' ? 'block' : 'none';
 
     openCameraBtn.disabled = false;
     closeCameraBtn.disabled = true;
     takePictureBtn.disabled = true;
     savePictureBtn.disabled = true;
   }
-});
+};
 
 // Take Picture
-takePictureBtn.addEventListener('click', () => {
+const takePicture = () => {
   if (stream) {
     // Set canvas size to match the video feed
     canvas.width = video.videoWidth;
@@ -67,16 +66,44 @@ takePictureBtn.addEventListener('click', () => {
     canvas.style.display = 'block';
 
     savePictureBtn.disabled = false; // Enable the "Save Picture" button
+    openCameraBtn.disabled = false;
+    closeCameraBtn.disabled = true;
   }
-});
+};
 
 // Save Picture
-savePictureBtn.addEventListener('click', () => {
+const savePicture = () => {
   if (canvas.width > 0 && canvas.height > 0) {
     const imageData = canvas.toDataURL('image/png'); // Convert canvas to a data URL
     const link = document.createElement('a'); // Create a link element
     link.href = imageData; // Set the href to the image data
     link.download = 'captured-image.png'; // Set the filename for download
     link.click(); // Trigger a click event to download the image
+  }
+};
+
+savePictureBtn.addEventListener('click', savePicture);
+
+// Attach button events
+openCameraBtn.addEventListener('click', openCamera);
+closeCameraBtn.addEventListener('click', closeCamera);
+takePictureBtn.addEventListener('click', takePicture);
+
+// Add keyboard shortcuts
+document.addEventListener('keydown', (event) => {
+  switch (event.key) {
+    case 'f': // Open camera
+      if (!openCameraBtn.disabled) openCamera();
+      break;
+    case 'j': // Close camera
+      if (!closeCameraBtn.disabled) closeCamera();
+      break;
+    case ' ': // Take picture (space bar)
+      event.preventDefault(); // Prevent page scrolling when space is pressed
+      if (!takePictureBtn.disabled) takePicture();
+      break;
+    case 'Enter': // Save picture (Enter key)
+      if (!savePictureBtn.disabled) savePicture();
+      break;
   }
 });
